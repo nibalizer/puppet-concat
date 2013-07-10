@@ -45,6 +45,12 @@ FORCE=""
 WARN=""
 SORTARG=""
 
+if `uname -a | grep SunOS > /dev/null`; then
+  READ=/usr/bin/read
+else
+  READ=read
+fi
+
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
 ## Well, if there's ever a bad way to do things, Nexenta has it.
@@ -112,7 +118,7 @@ else
 fi
 
 # find all the files in the fragments directory, sort them numerically and concat to fragments.concat in the working dir
-find fragments/ -type f -follow | LANG=C sort ${SORTARG} | while read -r fragfile; do
+find fragments/ -type f -follow | LANG=C sort ${SORTARG} | while ${READ} -r fragfile; do
 	cat "$fragfile" >> "fragments.concat"
 done
 
